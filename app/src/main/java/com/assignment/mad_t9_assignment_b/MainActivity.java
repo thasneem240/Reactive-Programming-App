@@ -1,10 +1,10 @@
 package com.assignment.mad_t9_assignment_b;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -32,7 +31,8 @@ public class MainActivity extends AppCompatActivity
     private ProgressBar progressBar;
     private EditText searchKey;
     private RecyclerView imageRecyclerView;
-    private Button buttonEnableRecyclerView;
+    private Button singleColumnView;
+    private Button doubleColumnView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -47,12 +47,14 @@ public class MainActivity extends AppCompatActivity
         progressBar = findViewById(R.id.progressBarId);
         searchKey = findViewById(R.id.inputSearch);
         imageRecyclerView = (RecyclerView) findViewById(R.id.imageRecyclerView);
-        buttonEnableRecyclerView = findViewById(R.id.buttonEnableRecyclerView);
+        singleColumnView = findViewById(R.id.singleColumnView);
+        doubleColumnView = findViewById(R.id.doubleColumnView);
 
 
         progressBar.setVisibility(View.INVISIBLE);
         imageRecyclerView.setVisibility(View.INVISIBLE);
-        buttonEnableRecyclerView.setVisibility(View.INVISIBLE);
+        singleColumnView.setVisibility(View.INVISIBLE);
+        doubleColumnView.setVisibility(View.INVISIBLE);
 
         searchImage.setOnClickListener(new View.OnClickListener()
         {
@@ -73,13 +75,27 @@ public class MainActivity extends AppCompatActivity
         });
 
 
-        buttonEnableRecyclerView.setOnClickListener(new View.OnClickListener()
+        singleColumnView.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                buttonEnableRecyclerView.setVisibility(View.INVISIBLE);
-                setUserRecyclerView();
+                singleColumnView.setVisibility(View.INVISIBLE);
+                doubleColumnView.setVisibility(View.INVISIBLE);
+
+                setUserRecyclerView("single");
+            }
+        });
+
+        doubleColumnView.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                doubleColumnView.setVisibility(View.INVISIBLE);
+                singleColumnView.setVisibility(View.INVISIBLE);
+
+                setUserRecyclerView("double");
             }
         });
 
@@ -154,7 +170,8 @@ public class MainActivity extends AppCompatActivity
                 Toast.makeText(MainActivity.this, "Image loading Ends", Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(View.INVISIBLE);
 
-                buttonEnableRecyclerView.setVisibility(View.VISIBLE);
+                singleColumnView.setVisibility(View.VISIBLE);
+                doubleColumnView.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -169,14 +186,24 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+    /* Set the Recycler view */
 
-    private void setUserRecyclerView()
+    private void setUserRecyclerView(String option)
     {
         if(!imageList.isEmpty())
         {
             imageRecyclerView.setVisibility(View.VISIBLE);
 
-            imageRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+            /* Single Column view*/
+            if(option.equals("single"))
+            {
+                imageRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+            }
+            else /* double column view*/
+            {
+                imageRecyclerView.setLayoutManager(new GridLayoutManager(this,2));
+            }
+
 
             //Create Adapter for the recyclerview
             MyAdapter adapter = new MyAdapter();
