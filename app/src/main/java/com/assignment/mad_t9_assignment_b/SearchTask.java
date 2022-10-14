@@ -14,7 +14,8 @@ public class SearchTask implements Callable<String> {
     private RemoteUtilities remoteUtilities;
     private Activity uiActivity;
 
-    public SearchTask(Activity uiActivity) {
+    public SearchTask(Activity uiActivity)
+    {
         this.searchkey = null;
         baseUrl ="https://pixabay.com/api/";
         remoteUtilities = RemoteUtilities.getInstance(uiActivity);
@@ -25,7 +26,9 @@ public class SearchTask implements Callable<String> {
     public String call() throws Exception
     {
         String response=null;
+
         String endpoint = getSearchEndpoint();
+
         HttpURLConnection connection = remoteUtilities.openConnection(endpoint);
 
         if(connection!=null)
@@ -35,7 +38,9 @@ public class SearchTask implements Callable<String> {
             if(remoteUtilities.isConnectionOkay(connection)==true)
             {
                 response = remoteUtilities.getResponseString(connection);
+
                 connection.disconnect();
+
                 try
                 {
                     Thread.sleep(3000);
@@ -46,6 +51,7 @@ public class SearchTask implements Callable<String> {
                 }
             }
         }
+
         return response;
     }
 
@@ -53,9 +59,10 @@ public class SearchTask implements Callable<String> {
     {
         String data = null;
         Uri.Builder url = Uri.parse(this.baseUrl).buildUpon();
-        url.appendQueryParameter("key","23319229-94b52a4727158e1dc3fd5f2db");
+        url.appendQueryParameter("key","30318127-3422398b9d792ad935302ce40");
         url.appendQueryParameter("q",this.searchkey);
         String urlString = url.build().toString();
+
         return urlString;
     }
 

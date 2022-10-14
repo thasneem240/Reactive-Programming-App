@@ -44,4 +44,9 @@ public class ImageList
     {
         return listOfImage.get(position);
     }
+
+    public void clear()
+    {
+        listOfImage.clear();
+    }
 }

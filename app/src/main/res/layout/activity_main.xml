@@ -51,15 +51,15 @@
         android:id="@+id/buttonEnableRecyclerView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="#00E676"
         android:text="Load Recycler View"
-        app:layout_constraintBottom_toBottomOf="@+id/usersRecyclerView"
+        android:textColor="@color/white"
+        android:textSize="21sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:textSize="21sp"
-        android:textStyle="bold"
-        android:textColor="@color/white"
-        android:backgroundTint="#64DD17"
+        app:layout_constraintBottom_toBottomOf="parent"
         />
 
 
@@ -71,6 +71,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
