@@ -1,6 +1,7 @@
 package com.assignment.mad_t9_assignment_b;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -21,10 +22,10 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class MainActivity extends AppCompatActivity
 {
 
-    Button loadImage;
-    ImageView picture;
-    ProgressBar progressBar;
-    EditText searchKey;
+    private Button searchImage;
+    private ProgressBar progressBar;
+    private EditText searchKey;
+    private RecyclerView imageRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -32,18 +33,23 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        loadImage = findViewById(R.id.loadImage);
-        picture = findViewById(R.id.picureId);
+
+        searchImage = findViewById(R.id.search_Image);
         progressBar = findViewById(R.id.progressBarId);
         searchKey = findViewById(R.id.inputSearch);
+        imageRecyclerView = findViewById(R.id.imageRecyclerView);
+
+
+
+
         progressBar.setVisibility(View.INVISIBLE);
 
-        loadImage.setOnClickListener(new View.OnClickListener()
+        searchImage.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                picture.setVisibility(View.INVISIBLE);
+                imageRecyclerView.setVisibility(View.INVISIBLE);
                 searchImage();
             }
         });
@@ -75,7 +81,7 @@ public class MainActivity extends AppCompatActivity
             {
                 Toast.makeText(MainActivity.this, "Searching Ends", Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(View.INVISIBLE);
-                loadImage(s);
+//                loadImage(s);
             }
 
             @Override
@@ -88,41 +94,47 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    public void loadImage(String response)
-    {
-        ImageRetrievalTask imageRetrievalTask = new ImageRetrievalTask(MainActivity.this);
-        imageRetrievalTask.setData(response);
+//    public void loadImage(String response)
+//    {
+//        ImageRetrievalTask imageRetrievalTask = new ImageRetrievalTask(MainActivity.this);
+//        imageRetrievalTask.setData(response);
+//
+//        Toast.makeText(MainActivity.this, "Image loading starts", Toast.LENGTH_SHORT).show();
+//        progressBar.setVisibility(View.VISIBLE);
+//        Single<Bitmap> searchObservable = Single.fromCallable(imageRetrievalTask);
+//        searchObservable = searchObservable.subscribeOn(Schedulers.io());
+//        searchObservable = searchObservable.observeOn(AndroidSchedulers.mainThread());
+//        searchObservable.subscribe(new SingleObserver<Bitmap>()
+//        {
+//            @Override
+//            public void onSubscribe(@NonNull Disposable d)
+//            {
+//
+//            }
+//
+//            @Override
+//            public void onSuccess(@NonNull Bitmap bitmap)
+//            {
+//                Toast.makeText(MainActivity.this, "Image loading Ends", Toast.LENGTH_SHORT).show();
+//                progressBar.setVisibility(View.INVISIBLE);
+//                picture.setVisibility(View.VISIBLE);
+//                picture.setImageBitmap(bitmap);
+//            }
+//
+//            @Override
+//            public void onError(@NonNull Throwable e)
+//            {
+//                Toast.makeText(MainActivity.this, "Image loading error, search again", Toast.LENGTH_SHORT).show();
+//                progressBar.setVisibility(View.INVISIBLE);
+//            }
+//        });
+//
+//
+//    }
 
-        Toast.makeText(MainActivity.this, "Image loading starts", Toast.LENGTH_SHORT).show();
-        progressBar.setVisibility(View.VISIBLE);
-        Single<Bitmap> searchObservable = Single.fromCallable(imageRetrievalTask);
-        searchObservable = searchObservable.subscribeOn(Schedulers.io());
-        searchObservable = searchObservable.observeOn(AndroidSchedulers.mainThread());
-        searchObservable.subscribe(new SingleObserver<Bitmap>()
-        {
-            @Override
-            public void onSubscribe(@NonNull Disposable d)
-            {
-
-            }
-
-            @Override
-            public void onSuccess(@NonNull Bitmap bitmap)
-            {
-                Toast.makeText(MainActivity.this, "Image loading Ends", Toast.LENGTH_SHORT).show();
-                progressBar.setVisibility(View.INVISIBLE);
-                picture.setVisibility(View.VISIBLE);
-                picture.setImageBitmap(bitmap);
-            }
-
-            @Override
-            public void onError(@NonNull Throwable e)
-            {
-                Toast.makeText(MainActivity.this, "Image loading error, search again", Toast.LENGTH_SHORT).show();
-                progressBar.setVisibility(View.INVISIBLE);
-            }
-        });
 
 
-    }
+
+
+
 }

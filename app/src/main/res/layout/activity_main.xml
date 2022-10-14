@@ -4,39 +4,64 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="10dp"
     tools:context=".MainActivity">
 
     <EditText
         android:id="@+id/inputSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:ems="10"
+        android:layout_marginTop="20dp"
+        android:ems="15"
         android:inputType="textPersonName"
-        android:text="Search Picture"
+        android:hint="Search Images"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/loadImage"
+        android:id="@+id/search_Image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Load Image"
+        android:layout_marginTop="25dp"
+        android:text="Search Images"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:backgroundTint="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inputSearch" />
 
-    <ImageView
-        android:id="@+id/picureId"
-        android:layout_width="343dp"
-        android:layout_height="347dp"
-        android:layout_marginTop="32dp"
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/imageRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loadImage"
-        tools:srcCompat="@tools:sample/avatars" />
+
+
+        app:layout_constraintTop_toBottomOf="@id/search_Image" >
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+
+    <Button
+        android:id="@+id/buttonEnableRecyclerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Load Recycler View"
+        app:layout_constraintBottom_toBottomOf="@+id/usersRecyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textSize="21sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:backgroundTint="#64DD17"
+        />
+
 
     <ProgressBar
         android:id="@+id/progressBarId"

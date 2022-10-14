@@ -20,7 +20,8 @@ public class RemoteUtilities
 
     public static RemoteUtilities remoteUtilities = null;
     private Activity uiActivity;
-    public RemoteUtilities(Activity uiActivity){
+    public RemoteUtilities(Activity uiActivity)
+    {
 
         this.uiActivity = uiActivity;
     }
