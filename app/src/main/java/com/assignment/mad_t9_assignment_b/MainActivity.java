@@ -307,6 +307,8 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+    /* Part of this code is Taken From https://firebase.google.com/docs/storage/android/upload-files*/
+
     /* Upload Image to Firebase Cloud Storage */
 
     private void uploadToCloud(ImageView imageView)
