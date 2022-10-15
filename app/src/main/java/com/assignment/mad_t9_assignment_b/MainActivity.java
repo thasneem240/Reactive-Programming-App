@@ -5,7 +5,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,16 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
+import java.util.UUID;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
@@ -34,6 +46,9 @@ public class MainActivity extends AppCompatActivity
     private Button singleColumnView;
     private Button doubleColumnView;
 
+    private FirebaseStorage firebaseStorage;
+    private StorageReference storageReference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -49,6 +64,9 @@ public class MainActivity extends AppCompatActivity
         imageRecyclerView = (RecyclerView) findViewById(R.id.imageRecyclerView);
         singleColumnView = findViewById(R.id.singleColumnView);
         doubleColumnView = findViewById(R.id.doubleColumnView);
+
+        firebaseStorage = FirebaseStorage.getInstance();
+        storageReference = firebaseStorage.getReference();
 
 
         progressBar.setVisibility(View.INVISIBLE);
@@ -272,7 +290,7 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onClick(View view)
                 {
-
+                    uploadToCloud(imageView);
                 }
             });
 
@@ -284,6 +302,67 @@ public class MainActivity extends AppCompatActivity
             int count = imageList.size();
             return count;
         }
+    }
+
+
+    /* Upload Image to Firebase Cloud Storage */
+
+    private void uploadToCloud(ImageView imageView)
+    {
+        /* Set the Progress Bar */
+
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Uploading Image...");
+        progressDialog.show();
+
+        /* Create a reference to image */
+
+        final String randomKey = UUID.randomUUID().toString();
+        StorageReference imgRef = storageReference.child("images/" + randomKey);
+
+        /* Get the data from an ImageView as bytes */
+
+        imageView.setDrawingCacheEnabled(true);
+        imageView.buildDrawingCache();
+
+
+
+        Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+
+        UploadTask uploadTask = imgRef.putBytes(data);
+
+        uploadTask.addOnFailureListener(new OnFailureListener()
+        {
+            @Override
+            public void onFailure(@NonNull Exception exception)
+            {
+                // Handle unsuccessful uploads
+                progressDialog.dismiss();
+                Toast.makeText(MainActivity.this, "Failed to Upload", Toast.LENGTH_LONG).show();
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>()
+        {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot)
+            {
+                progressDialog.dismiss();
+                Toast.makeText(MainActivity.this, "Image Successfully Uploaded", Toast.LENGTH_LONG).show();
+            }
+        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>()
+        {
+            @Override
+            public void onProgress(@androidx.annotation.NonNull UploadTask.TaskSnapshot snapshot)
+            {
+                double progressPercent = (100.00 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
+                progressDialog.setMessage("Percentage: " + (int) progressPercent + "%");
+            }
+        });
+
+
     }
 
 
