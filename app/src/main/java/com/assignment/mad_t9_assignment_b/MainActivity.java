@@ -26,6 +26,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -317,8 +319,19 @@ public class MainActivity extends AppCompatActivity
 
         /* Create a reference to image */
 
-        final String randomKey = UUID.randomUUID().toString();
-        StorageReference imgRef = storageReference.child("images/" + randomKey);
+        /* First option with random key for image name */
+
+//        final String randomKey = UUID.randomUUID().toString();
+//        StorageReference imgRef = storageReference.child("images/" + randomKey);
+
+
+        /* Second Option with Data as image name */
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
+        Date dateNow = new Date();
+        String fileName = simpleDateFormat.format(dateNow);
+        StorageReference imgRef = storageReference.child("images/" + fileName);
+
 
         /* Get the data from an ImageView as bytes */
 
